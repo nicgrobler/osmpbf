@@ -1,15 +1,12 @@
 # osmpbf
-[![Build Status](https://travis-ci.org/qedus/osmpbf.svg?branch=master)](https://travis-ci.org/qedus/osmpbf)
-[![Coverage Status](https://coveralls.io/repos/github/qedus/osmpbf/badge.svg?branch=master)](https://coveralls.io/github/qedus/osmpbf?branch=master)
-[![Go Report Card](https://goreportcard.com/badge/github.com/qedus/osmpbf)](https://goreportcard.com/report/github.com/qedus/osmpbf)
-[![GoDoc](https://godoc.org/github.com/qedus/osmpbf?status.svg)](https://godoc.org/github.com/qedus/osmpbf)
+forked from github.com/qedus/osmpbf to enable a few small changes for me use case
 
 Package osmpbf is used to decode OpenStreetMap pbf files.
 
 ## Installation
 
 ```bash
-$ go get github.com/qedus/osmpbf
+$ go get github.com/nicgrobler/osmpbf
 ```
 
 ## Usage
