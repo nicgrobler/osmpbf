@@ -27,7 +27,7 @@ Usage is similar to `json.Decoder`.
 ```
 note that we need to supply a list of keys that we want data for. so if looking only for a few tags, add them here, as shown below.
 nothing else will be returned
-``
+```Go
 	// start decoding with several goroutines, it is faster
 	err = d.Start(runtime.GOMAXPROCS(-1), map[string]bool{"building": true, "highway": true, "footpath": true, "power": true})
 	if err != nil {
