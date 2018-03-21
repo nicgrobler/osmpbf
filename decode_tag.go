@@ -2,7 +2,11 @@ package osmpbf
 
 // Make tags map from stringtable and two parallel arrays of IDs.
 func extractTags(stringTable []string, keyIDs, valueIDs []uint32) map[string]string {
-	tags := make(map[string]string, len(keyIDs))
+	var tags map[string]string
+	//only init a map if we have some data
+	if len(keyIDs) > 0 {
+		tags = make(map[string]string, len(keyIDs))
+	}
 	for index, keyID := range keyIDs {
 		key := stringTable[keyID]
 		val := stringTable[valueIDs[index]]
