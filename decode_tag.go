@@ -4,7 +4,8 @@ package osmpbf
 func extractTags(stringTable []string, keyIDs, valueIDs []uint32) map[string]string {
 	var tags map[string]string
 	//only init a map if we have some data.
-	if len(keyIDs) > 0 {
+	if len(keyIDs) > 0 && len(stringTable) > 0 {
+		//length, but is it empty - i.e. initialized with a size
 		tags = make(map[string]string, len(keyIDs))
 	}
 	for index, keyID := range keyIDs {
