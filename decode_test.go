@@ -132,6 +132,8 @@ var (
 			Visible:   true,
 		},
 	}
+
+	validIds = map[string]bool{"alt_name": true, "amenity": true, "created_by": true, "name": true, "note": true, "area": true, "highway": true, "type": true}
 )
 
 func init() {
@@ -219,7 +221,7 @@ func TestDecode(t *testing.T) {
 		t.Errorf("\nExpected: %#v\nActual:   %#v", eh, header)
 	}
 
-	err = d.Start(runtime.GOMAXPROCS(-1))
+	err = d.Start(runtime.GOMAXPROCS(-1), validIds)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -299,7 +301,7 @@ func TestDecodeConcurrent(t *testing.T) {
 
 	d := NewDecoder(f)
 	d.SetBufferSize(1)
-	err = d.Start(runtime.GOMAXPROCS(-1))
+	err = d.Start(runtime.GOMAXPROCS(-1), validIds)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -394,7 +396,7 @@ func BenchmarkDecode(b *testing.B) {
 		if blobBufferSize > 0 {
 			d.SetBufferSize(blobBufferSize)
 		}
-		err = d.Start(runtime.GOMAXPROCS(-1))
+		err = d.Start(runtime.GOMAXPROCS(-1), validIds)
 		if err != nil {
 			b.Fatal(err)
 		}
@@ -448,7 +450,7 @@ func BenchmarkDecodeConcurrent(b *testing.B) {
 		if blobBufferSize > 0 {
 			d.SetBufferSize(blobBufferSize)
 		}
-		err = d.Start(runtime.GOMAXPROCS(-1))
+		err = d.Start(runtime.GOMAXPROCS(-1), validIds)
 		if err != nil {
 			b.Fatal(err)
 		}

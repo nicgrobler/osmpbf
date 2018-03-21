@@ -143,7 +143,7 @@ func (dec *Decoder) Header() (*Header, error) {
 }
 
 // Start decoding process using n goroutines.
-func (dec *Decoder) Start(n int) error {
+func (dec *Decoder) Start(n int, validKeys map[string]bool) error {
 	if n < 1 {
 		n = 1
 	}
@@ -157,7 +157,7 @@ func (dec *Decoder) Start(n int) error {
 		input := make(chan pair)
 		output := make(chan pair)
 		go func() {
-			dd := new(dataDecoder)
+			dd := newDD(validKeys)
 			for p := range input {
 				if p.e == nil {
 					// send decoded objects or decoding error

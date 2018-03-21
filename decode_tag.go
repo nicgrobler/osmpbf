@@ -1,15 +1,14 @@
 package osmpbf
 
 // Make tags map from stringtable and two parallel arrays of IDs.
-func extractTags(stringTable []string, keyIDs, valueIDs []uint32) map[string]string {
-	var tags map[string]string
-	//only init a map if we have some data.
-	if len(keyIDs) > 0 && len(stringTable) > 0 {
-		//length, but is it empty - i.e. initialized with a size
-		tags = make(map[string]string, len(keyIDs))
-	}
+func extractTags(stringTable []string, keyIDs, valueIDs []uint32, validKeys map[string]bool) map[string]string {
+	tags := make(map[string]string, len(keyIDs))
 	for index, keyID := range keyIDs {
 		key := stringTable[keyID]
+		if !validKeys[key] {
+			//we don't care about this key, so move on
+			continue
+		}
 		val := stringTable[valueIDs[index]]
 		tags[key] = val
 	}
@@ -23,12 +22,8 @@ type tagUnpacker struct {
 }
 
 // Make tags map from stringtable and array of IDs (used in DenseNodes encoding).
-func (tu *tagUnpacker) next() map[string]string {
-	var tags map[string]string
-	//only init a map if we have some data.
-	if len(tu.keysVals) > 0 && len(tu.stringTable) > 0 {
-		tags = make(map[string]string)
-	}
+func (tu *tagUnpacker) next(validKeys map[string]bool) map[string]string {
+	tags := make(map[string]string)
 	for tu.index < len(tu.keysVals) {
 		keyID := tu.keysVals[tu.index]
 		tu.index++
@@ -40,6 +35,10 @@ func (tu *tagUnpacker) next() map[string]string {
 		tu.index++
 
 		key := tu.stringTable[keyID]
+		if !validKeys[key] {
+			//we don't care about this key, so move on
+			continue
+		}
 		val := tu.stringTable[valID]
 		tags[key] = val
 	}

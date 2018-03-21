@@ -10,6 +10,13 @@ import (
 // Decoder for Blob with OSMData (PrimitiveBlock)
 type dataDecoder struct {
 	q []interface{}
+	v map[string]bool
+}
+
+func newDD(m map[string]bool) *dataDecoder {
+	dd := new(dataDecoder)
+	dd.v = m
+	return dd
 }
 
 func (dec *dataDecoder) Decode(blob *OSMPBF.Blob) ([]interface{}, error) {
@@ -58,7 +65,7 @@ func (dec *dataDecoder) parseNodes(pb *OSMPBF.PrimitiveBlock, nodes []*OSMPBF.No
 		latitude := 1e-9 * float64((latOffset + (granularity * lat)))
 		longitude := 1e-9 * float64((lonOffset + (granularity * lon)))
 
-		tags := extractTags(st, node.GetKeys(), node.GetVals())
+		tags := extractTags(st, node.GetKeys(), node.GetVals(), dec.v)
 		info := extractInfo(st, node.GetInfo(), dateGranularity)
 
 		dec.q = append(dec.q, &Node{id, latitude, longitude, tags, info})
@@ -88,7 +95,7 @@ func (dec *dataDecoder) parseDenseNodes(pb *OSMPBF.PrimitiveBlock, dn *OSMPBF.De
 		lon = lons[index] + lon
 		latitude := 1e-9 * float64((latOffset + (granularity * lat)))
 		longitude := 1e-9 * float64((lonOffset + (granularity * lon)))
-		tags := tu.next()
+		tags := tu.next(dec.v)
 		info := extractDenseInfo(st, &state, di, index, dateGranularity)
 
 		dec.q = append(dec.q, &Node{id, latitude, longitude, tags, info})
@@ -102,7 +109,7 @@ func (dec *dataDecoder) parseWays(pb *OSMPBF.PrimitiveBlock, ways []*OSMPBF.Way)
 	for _, way := range ways {
 		id := way.GetId()
 
-		tags := extractTags(st, way.GetKeys(), way.GetVals())
+		tags := extractTags(st, way.GetKeys(), way.GetVals(), dec.v)
 
 		refs := way.GetRefs()
 		var nodeID int64
@@ -153,7 +160,7 @@ func (dec *dataDecoder) parseRelations(pb *OSMPBF.PrimitiveBlock, relations []*O
 
 	for _, rel := range relations {
 		id := rel.GetId()
-		tags := extractTags(st, rel.GetKeys(), rel.GetVals())
+		tags := extractTags(st, rel.GetKeys(), rel.GetVals(), dec.v)
 		members := extractMembers(st, rel)
 		info := extractInfo(st, rel.GetInfo(), dateGranularity)
 
