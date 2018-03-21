@@ -3,7 +3,7 @@ package osmpbf
 // Make tags map from stringtable and two parallel arrays of IDs.
 func extractTags(stringTable []string, keyIDs, valueIDs []uint32) map[string]string {
 	var tags map[string]string
-	//only init a map if we have some data
+	//only init a map if we have some data.
 	if len(keyIDs) > 0 {
 		tags = make(map[string]string, len(keyIDs))
 	}
@@ -24,7 +24,7 @@ type tagUnpacker struct {
 // Make tags map from stringtable and array of IDs (used in DenseNodes encoding).
 func (tu *tagUnpacker) next() map[string]string {
 	var tags map[string]string
-	//only init a map if we have some data
+	//only init a map if we have some data.
 	if len(tu.keysVals) > 0 {
 		tags = make(map[string]string)
 	}
