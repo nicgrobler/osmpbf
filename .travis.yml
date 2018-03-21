@@ -8,7 +8,7 @@ go:
   - tip
 
 install:
-  - go get -v github.com/qedus/osmpbf
+  - go get -v github.com/nicgrobler/osmpbf
 
 script:
   - make init

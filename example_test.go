@@ -7,7 +7,7 @@ import (
 	"os"
 	"runtime"
 
-	"github.com/qedus/osmpbf"
+	"github.com/nicgrobler/osmpbf"
 )
 
 // Don't forget to sync with README.md
