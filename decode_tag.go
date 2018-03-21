@@ -26,7 +26,7 @@ type tagUnpacker struct {
 func (tu *tagUnpacker) next() map[string]string {
 	var tags map[string]string
 	//only init a map if we have some data.
-	if len(tu.keysVals) > 0 {
+	if len(tu.keysVals) > 0 && len(tu.stringTable) > 0 {
 		tags = make(map[string]string)
 	}
 	for tu.index < len(tu.keysVals) {
